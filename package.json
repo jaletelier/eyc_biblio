@@ -29,6 +29,7 @@
     "tether": "^1.4.0"
   },
   "devDependencies": {
+    "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.28.4",
     "html-webpack-plugin": "^2.29.0",
     "html-webpack-pug-plugin": "^0.2.0",

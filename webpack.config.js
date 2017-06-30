@@ -1,3 +1,4 @@
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPugPlugin = require('html-webpack-pug-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -10,7 +11,7 @@ module.exports = {
   entry: './app/webpack-index.js',
   output: {
     path: path.resolve(__dirname, 'public/'),
-    publicPath:'/',
+    publicPath: '/',
     filename: 'webpack-index.bundle.js'
   },
   module: {
@@ -27,10 +28,13 @@ module.exports = {
       })
     }]
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: 'app/views/main_template.pug',
-    filename: '../app/views/main.pug',
-    filetype: 'pug',
-    inject:false
-  }),new HtmlWebpackPugPlugin(), extractSass]
+  plugins: [
+    new CleanWebpackPlugin(['public']),
+    new HtmlWebpackPlugin({
+      template: 'app/views/main_template.pug',
+      filename: '../app/views/main.pug',
+      filetype: 'pug',
+      inject: false
+    }), new HtmlWebpackPugPlugin(), extractSass
+  ]
 };
