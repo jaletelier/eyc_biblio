@@ -1,4 +1,19 @@
 extends main.pug
 block body
-  h1 Hola soy express!
-  button.btn.btn-primary Y Soy un botón
+  nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
+    button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse',data-target="#navbarContent",aria-controls="navbarContent", aria-expanded="false", aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+    a.navbar-brand
+      img(src='images/logo-blanco.png', alt='', height='30px')
+    .navbar-collapse.collapse#navbarContent
+      ul.navbar-nav.mr-auto
+        li.nav-item.active
+          a.nav-link(href='#') Inicio
+            span.sr-only (actual)
+        li.nav-item
+          a.nav-link(href='#') Documentos
+        li.nav-item
+          a.nav-link(href='#') Usuarios
+  .container-fluid
+    h1 Hola soy express!
+    button.btn.btn-primary Y Soy un botón
