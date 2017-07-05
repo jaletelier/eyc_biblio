@@ -21,7 +21,10 @@ module.exports = {
         use: [{
           loader: "css-loader"
         }, {
-          loader: "sass-loader"
+          loader: "sass-loader",
+            options: {
+                    includePaths: ["node_modules"]
+                }
         }],
         // use style-loader in development
         fallback: "style-loader"

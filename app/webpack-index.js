@@ -1,4 +1,5 @@
 window.$ = window.jQuery = require("jquery");
 window.Tether=require('tether');
+require('select2');
 require('bootstrap');
-require('bootstrap/scss/bootstrap.scss');
+require('./client/main.scss');

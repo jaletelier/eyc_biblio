@@ -1,0 +1,26 @@
+extends /main.pug
+block body
+  .container-fluid
+    h1 Nuevo Documento
+    form
+      .row
+        .col
+          .form-group
+            label(for="documentName") Título
+          input(type="text" class="form-control" id="documentName" aria-describedby="titleHelp" placeholder="Título")
+          small(id="titleHelp" class="form-text text-muted") We'll never share your email with anyone else
+      .row
+        .col
+          .form-group
+            select#trySelect.custome-select( multiple="multiple", style="width: 100%")
+              option(value="hola") Hola!
+              option(value="chao") Chao!
+              option(value="salut") Salut!
+              option(value="au revoir") Au Revoir!
+block append scripts
+  script.
+    $(function(){
+      $('#trySelect').select2({
+       theme: "bootstrap"
+      });
+    })      
