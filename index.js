@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const category = require('./app/controllers/category');
+const document = require('./app/controllers/document');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/app/views'));
@@ -15,9 +17,10 @@ app.get('/',function(req,res){
 	res.render('express-index');
 });
 
-app.get('/document',function(req,res){
-  res.render('document/create');
-});
+app.get('/document',document.list);
+
+app.get('/categories',category.list);
+app.post('/categories',category.post)
 
 app.listen( process.env.PORT || 3000,function(){
 	console.log("Example app listening on port "+(process.env.PORT||3000));

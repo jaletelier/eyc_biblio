@@ -1,0 +1,22 @@
+extends main.pug
+block body
+  header.mb-3
+    nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
+      button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse',data-target="#navbarContent",aria-controls="navbarContent", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      a.navbar-brand Iguales
+      .navbar-collapse.collapse#navbarContent
+        ul.navbar-nav.mr-auto
+          li.nav-item.active
+            a.nav-link(href='#') Inicio
+              span.sr-only (actual)
+          li.nav-item
+            a.nav-link(href='/document') Documentos
+          li.nav-item
+            a.nav-link(href='/categories') Categorias
+  main        
+    .container
+      block content
+  footer
+    .row
+      .col Footer      

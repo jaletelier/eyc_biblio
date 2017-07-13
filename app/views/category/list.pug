@@ -1,0 +1,15 @@
+extends /layout
+block content
+  h1 Categorias
+  p.lead Listado de categorias
+  .row.mb-2
+    .col
+      form.form-inline(method='POST')
+        .input-group
+          input(type='text', placeholder="Nombre Categoría", name='name', required).form-control
+        button.btn.btn-primary.ml-2(type='submit') Crear nueva        
+  .row
+    .col
+      ul.list-group
+        each category in categories
+          li.list-group-item #{category.name}

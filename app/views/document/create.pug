@@ -1,26 +1,85 @@
-extends /main.pug
-block body
-  .container-fluid
-    h1 Nuevo Documento
-    form
-      .row
-        .col
-          .form-group
-            label(for="documentName") Título
-          input(type="text" class="form-control" id="documentName" aria-describedby="titleHelp" placeholder="Título")
-          small(id="titleHelp" class="form-text text-muted") We'll never share your email with anyone else
-      .row
-        .col
-          .form-group
-            select#trySelect.custome-select( multiple="multiple", style="width: 100%")
-              option(value="hola") Hola!
-              option(value="chao") Chao!
-              option(value="salut") Salut!
-              option(value="au revoir") Au Revoir!
+extends /layout.pug
+block content
+  h1 Nuevo Documento
+  form
+    .row
+      .col
+        .form-group
+          label(for="documentName") Título
+        input(type="text" class="form-control" id="documentName" aria-describedby="titleHelp" placeholder="Título")
+        small(id="titleHelp" class="form-text text-muted") We'll never share your email with anyone else
+    .row
+      .col
+        .form-group
+          label(for="documentDescription") Descripción
+        textarea(class="form-control" id="documentDescription" aria-describedby="descriptionHelp" placeholder="Descripción")
+        small(id="descriptionHelp" class="form-text text-muted") Descripción o Abstract del artículo.
+    .row
+      .col
+        .form-group
+          label(for="documentDescription") Año
+        select(class="form-control" id="documentYear" aria-describedby="yearHelp" placeholder="Año")
+          option(value='2010') 2010
+          option(value='2011') 2011
+        small(id="descriptionHelp" class="form-text text-muted") Año de publicación del artículo.  
+      .col
+        .form-group
+          label(for="documentLanguage") Idioma
+        select.form-control#documentLanguage(aria-describedby="languageHelp" placeholder="Idioma")
+          option(value='ES') Español
+          option(value='EN') Ingles
+        small#languageHelp.form-text-text-muted Idioma en que está escrito el árticulo  
+    .row#try
+      .col
+        .form-group
+          label(for="documentCategories") Categoría
+          select#documentCategories.custome-select( multiple="multiple", style="width: 100%")
+            each category in categories
+              option(value=category.categoryId) #{category.name}
+          small#languageHelp.form-text-text-muted ¿Falta una categoría? #[a(href='#') crea una nueva]
+      .col
+        .form-group
+          label(for="documentKeywords") Palabras clave
+          select#documentKeywords.custome-select( multiple="multiple", style="width: 100%")
+            option(value="hola") Uno
+            option(value="chao") Dos
+            option(value="salut") Salut!
+            option(value="au revoir") Au Revoir!
+      .col
+        .form-group
+          label(for="documentAuthors") Autores
+          select#documentKeywords.custome-select( multiple="multiple", style="width: 100%")
+            option(value="hola") Uno
+            option(value="chao") Dos
+            option(value="salut") Salut!
+            option(value="au revoir") Au Revoir!     
 block append scripts
   script.
     $(function(){
-      $('#trySelect').select2({
-       theme: "bootstrap"
+      $('#documentCategories').select2({
+        theme: "bootstrap",
+        tags:true,
+        dropdownParent: $('#try'),
+
+         createTag: function (params) {
+          return {
+            id: params.term,
+            text: params.term,
+            newOption: true
+          }
+        },
+         templateResult: function (data) {
+         if(data.text.trim()=='') return;
+          var $result = $("<span></span>");
+
+          $result.text(data.text);
+
+          if (data.newOption) {
+            $result.append(" <em>(new)</em>");
+          }
+
+          return $result;
+        }
       });
+      $('#documentCategories').select2('data');
     })      

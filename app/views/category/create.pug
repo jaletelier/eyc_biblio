@@ -1,0 +1,19 @@
+extends /layout.pug
+block content
+  h1 Nueva Categoría
+  form
+    .row
+      .col
+        .form-group
+          label(for="documentName") Título
+        input(type="text" class="form-control" id="documentName" aria-describedby="titleHelp" placeholder="Título")
+        small(id="titleHelp" class="form-text text-muted") We'll never share your email with anyone else
+    .row
+      .col
+        .form-group
+          label(for="documentDescription") Descripción
+        textarea(class="form-control" id="documentDescription" aria-describedby="descriptionHelp" placeholder="Descripción")
+        small(id="descriptionHelp" class="form-text text-muted") Descripción o Abstract del artículo.
+    .row
+      .col
+        button.btn.btn-primary(type='submit') Crear

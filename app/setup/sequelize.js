@@ -16,11 +16,15 @@ sequelize
 
 const M = require('../models')(sequelize);
 
-console.log(M.Document);
 
-M.Document.hasMany(M.Keyword);
-M.Document.hasMany(M.Author);
-M.Document.hasMany(M.Category);
+M.Category.sync({force: true});
+M.Document.sync({force: true});
+M.Keyword.sync({force: true});
+M.Author.sync({force: true});
+
 M.Keyword.belongsToMany(M.Document,{through: 'DocumentKeyword'});
 M.Author.belongsToMany(M.Document,{through: 'DocumentKeyword'});
 M.Category.belongsToMany(M.Document,{through: 'DocumentKeyword'});
+
+
+module.exports = M;
