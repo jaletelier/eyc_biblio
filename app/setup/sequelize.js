@@ -5,17 +5,8 @@ const sequelize = new Sequelize('postgres://axwaidfacvuanm:1d09701d6bfee87f7cf5b
     ssl: true
   }
 });
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
 
 const M = require('../models')(sequelize);
-
 
 M.Category.sync({force: true});
 M.Document.sync({force: true});
@@ -23,8 +14,11 @@ M.Keyword.sync({force: true});
 M.Author.sync({force: true});
 
 M.Keyword.belongsToMany(M.Document,{through: 'DocumentKeyword'});
-M.Author.belongsToMany(M.Document,{through: 'DocumentKeyword'});
-M.Category.belongsToMany(M.Document,{through: 'DocumentKeyword'});
+M.Author.belongsToMany(M.Document,{through: 'DocumentAuthor'});
+M.Category.belongsToMany(M.Document,{through: 'DocumentCategory'});
 
 
-module.exports = M;
+module.exports = {
+  sequelize,
+  M
+}

@@ -40,6 +40,7 @@
     "sequelize": "^4.2.1",
     "style-loader": "^0.18.2",
     "tether": "^1.4.0",
+    "underscore": "^1.8.3",
     "webpack": "^3.0.0"
   },
   "engines": {

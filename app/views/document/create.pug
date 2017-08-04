@@ -41,10 +41,8 @@ block content
         .form-group
           label(for="documentKeywords") Palabras clave
           select#documentKeywords.custome-select( multiple="multiple", style="width: 100%")
-            option(value="hola") Uno
-            option(value="chao") Dos
-            option(value="salut") Salut!
-            option(value="au revoir") Au Revoir!
+            each keyword in keywords
+              option(value=keyword.keyword) #{keyword.keyword}
       .col
         .form-group
           label(for="documentAuthors") Autores
@@ -57,10 +55,12 @@ block append scripts
   script.
     $(function(){
       $('#documentCategories').select2({
+        theme: 'bootstrap',
+      });
+
+      $('#documentKeywords').select2({
         theme: "bootstrap",
         tags:true,
-        dropdownParent: $('#try'),
-
          createTag: function (params) {
           return {
             id: params.term,
@@ -81,5 +81,22 @@ block append scripts
           return $result;
         }
       });
+
+      $('#documentKeywords').on('change',function(e){
+        _.each($('#documentKeywords').select2('data'),function(data){
+          if(data.newOption){
+            $.ajax({
+            type: "POST",
+            url: '/keyword',
+            data: {
+              keyword: data.text
+            },
+            success: function(s){console.log(s); data.newOption=false},
+            dataType: 'json'
+          });
+          }
+        });
+      });
+
       $('#documentCategories').select2('data');
     })      

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const keyword = require('./app/controllers/keyword');
 const category = require('./app/controllers/category');
 const document = require('./app/controllers/document');
 
@@ -10,22 +11,32 @@ app.set('views', path.join(__dirname, '/app/views'));
 app.locals.basedir = path.join(__dirname, '/app/views');
 app.use(express.static('public'));
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 app.use(bodyParser.json())
 
-app.get('/',function(req,res){
-	res.render('express-index');
+app.get('/', function(req, res) {
+  res.render('express-index');
 });
 
-app.get('/document',document.list);
+app.get('/document', document.list);
 
-app.get('/categories',category.list);
-app.post('/categories',category.post)
+app.get('/category', category.list);
+app.post('/category', category.post)
 
-app.listen( process.env.PORT || 3000,function(){
-	console.log("Example app listening on port "+(process.env.PORT||3000));
-});
-
+app.get('/keyword', keyword.list);
+app.post('/keyword', keyword.post)
 
 
-require('./app/setup/sequelize');
+
+require('./app/setup/sequelize').sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+    app.listen(process.env.PORT || 3000, function() {
+      console.log("Iguales app listening on port " + (process.env.PORT || 3000));
+    });
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });;

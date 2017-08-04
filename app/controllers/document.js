@@ -1,4 +1,4 @@
-const M = require('../setup/sequelize');
+const M = require('../setup/sequelize').M;
 
 module.exports = {
   list: function(req, res) {
@@ -11,6 +11,10 @@ module.exports = {
       })
       .then(categories => {
         locals.categories = categories;
+        return M.Keyword.findAll();
+      })
+      .then(keywords => {
+        locals.keywords = keywords;
         res.render('document/create', locals);
       });
   },
