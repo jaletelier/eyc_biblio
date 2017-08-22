@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
     year: DataTypes.INTEGER,
-    lenguage: DataTypes.STRING,
+    language: DataTypes.STRING,
     source: DataTypes.TEXT,
     uri: DataTypes.STRING
   })

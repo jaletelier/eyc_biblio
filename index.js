@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+
+const author = require('./app/controllers/author');
 const keyword = require('./app/controllers/keyword');
 const category = require('./app/controllers/category');
 const document = require('./app/controllers/document');
@@ -21,12 +23,17 @@ app.get('/', function(req, res) {
 });
 
 app.get('/document', document.list);
+app.get('/document/create', document.create);
+app.post('/document', document.post)
 
 app.get('/category', category.list);
 app.post('/category', category.post)
 
 app.get('/keyword', keyword.list);
 app.post('/keyword', keyword.post)
+
+app.get('/author', author.list);
+app.post('/author', author.post)
 
 
 

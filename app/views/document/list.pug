@@ -1,0 +1,14 @@
+extends /layout
+block content
+  h1 Documentos
+  p.lead Listado de documentos
+  .row.mb-3
+    .col
+      a.btn.btn-primary(href='document/create') Crear nuevo documento
+  .row
+    .col
+      ul.list-group
+        each document in documents
+          li.list-group-item #{document.title} - 
+            each category in document.categories
+              |  #{category.name} -

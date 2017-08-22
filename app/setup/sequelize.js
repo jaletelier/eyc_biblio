@@ -8,14 +8,17 @@ const sequelize = new Sequelize('postgres://axwaidfacvuanm:1d09701d6bfee87f7cf5b
 
 const M = require('../models')(sequelize);
 
-M.Category.sync({force: true});
+M.Keyword.belongsToMany(M.Document,{through: 'DocumentKeyword'});
+M.Author.belongsToMany(M.Document,{through: 'DocumentAuthor'});
+M.Category.belongsToMany(M.Document,{through: 'DocumentCategory'});
+M.Document.belongsToMany(M.Category,{through: 'DocumentCategory'});
+
+M.Category.sync({force: false});
 M.Document.sync({force: true});
 M.Keyword.sync({force: true});
 M.Author.sync({force: true});
 
-M.Keyword.belongsToMany(M.Document,{through: 'DocumentKeyword'});
-M.Author.belongsToMany(M.Document,{through: 'DocumentAuthor'});
-M.Category.belongsToMany(M.Document,{through: 'DocumentCategory'});
+sequelize.sync();
 
 
 module.exports = {

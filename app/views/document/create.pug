@@ -1,56 +1,58 @@
 extends /layout.pug
 block content
   h1 Nuevo Documento
-  form
-    .row
+  form(action='/document', method='post')
+    .row.mb-2
       .col
         .form-group
           label(for="documentName") Título
-        input(type="text" class="form-control" id="documentName" aria-describedby="titleHelp" placeholder="Título")
-        small(id="titleHelp" class="form-text text-muted") We'll never share your email with anyone else
-    .row
+          input(type="text" class="form-control" id="documentName" aria-describedby="titleHelp" placeholder="Título" name='title')
+    .row.mb-2
       .col
         .form-group
           label(for="documentDescription") Descripción
-        textarea(class="form-control" id="documentDescription" aria-describedby="descriptionHelp" placeholder="Descripción")
-        small(id="descriptionHelp" class="form-text text-muted") Descripción o Abstract del artículo.
-    .row
+          textarea(class="form-control" id="documentDescription" aria-describedby="descriptionHelp" placeholder="Descripción" name='description')
+          small(id="descriptionHelp" class="form-text text-muted") Descripción o Abstract del artículo.
+    .row.mb-2
       .col
         .form-group
           label(for="documentDescription") Año
-        select(class="form-control" id="documentYear" aria-describedby="yearHelp" placeholder="Año")
-          option(value='2010') 2010
-          option(value='2011') 2011
-        small(id="descriptionHelp" class="form-text text-muted") Año de publicación del artículo.  
+          select(class="form-control" id="documentYear" aria-describedby="yearHelp" placeholder="Año" name='year')
+            each year in years
+              option(value=year) #{year}
+          small(id="descriptionHelp" class="form-text text-muted") Año de publicación del artículo.  
       .col
         .form-group
           label(for="documentLanguage") Idioma
-        select.form-control#documentLanguage(aria-describedby="languageHelp" placeholder="Idioma")
-          option(value='ES') Español
-          option(value='EN') Ingles
-        small#languageHelp.form-text-text-muted Idioma en que está escrito el árticulo  
+          select.form-control#documentLanguage(aria-describedby="languageHelp" placeholder="Idioma" name='language')
+            option(value='ES') Español
+            option(value='EN') Ingles
+          small#languageHelp.form-text-text-muted Idioma en que está escrito el árticulo  
     .row#try
       .col
         .form-group
           label(for="documentCategories") Categoría
-          select#documentCategories.custome-select( multiple="multiple", style="width: 100%")
+          select#documentCategories.custome-select( multiple="multiple", style="width: 100%" name='categories')
             each category in categories
-              option(value=category.categoryId) #{category.name}
+              option(value=category.id) #{category.name}
           small#languageHelp.form-text-text-muted ¿Falta una categoría? #[a(href='#') crea una nueva]
       .col
         .form-group
           label(for="documentKeywords") Palabras clave
-          select#documentKeywords.custome-select( multiple="multiple", style="width: 100%")
+          select#documentKeywords.custome-select( multiple="multiple", style="width: 100%" name='keywords')
             each keyword in keywords
               option(value=keyword.keyword) #{keyword.keyword}
       .col
         .form-group
           label(for="documentAuthors") Autores
-          select#documentKeywords.custome-select( multiple="multiple", style="width: 100%")
-            option(value="hola") Uno
-            option(value="chao") Dos
-            option(value="salut") Salut!
-            option(value="au revoir") Au Revoir!     
+          select#documentAuthors.custome-select( multiple="multiple", style="width: 100%" name='authors')
+            each author in authors
+              option(value=author.name) #{author.name}
+    .row
+      .col
+        .form-group
+          button(type='submit').btn.btn-primary.mr-2 Crear Documento  
+          button(type='button').btn.btn-danger.btn-sm Cancelar     
 block append scripts
   script.
     $(function(){
@@ -58,7 +60,18 @@ block append scripts
         theme: 'bootstrap',
       });
 
-      $('#documentKeywords').select2({
+      $('#documentKeywords').select2(select2tagOptions);
+
+      $('#documentAuthors').select2(select2tagOptions)
+
+      $('#documentKeywords').on('change',select2TagOnChange('#documentKeywords','/keyword','keyword'));
+
+       $('#documentAuthors').on('change',select2TagOnChange('#documentAuthors','/author','name'));
+
+      $('#documentCategories').select2('data');
+    });
+
+    var select2tagOptions={
         theme: "bootstrap",
         tags:true,
          createTag: function (params) {
@@ -75,28 +88,28 @@ block append scripts
           $result.text(data.text);
 
           if (data.newOption) {
-            $result.append(" <em>(new)</em>");
+            $result.append(" <em>(nuevo)</em>");
           }
 
           return $result;
         }
-      });
+      };
 
-      $('#documentKeywords').on('change',function(e){
-        _.each($('#documentKeywords').select2('data'),function(data){
-          if(data.newOption){
-            $.ajax({
-            type: "POST",
-            url: '/keyword',
-            data: {
-              keyword: data.text
-            },
-            success: function(s){console.log(s); data.newOption=false},
-            dataType: 'json'
-          });
+      var select2TagOnChange = function(id,url,attr){
+        return function(e){
+            _.each($(id).select2('data'),function(data){
+              if(data.newOption){
+                var jsonData={};
+                jsonData[attr] = data.text;
+                $.ajax({
+                type: "POST",
+                url: url,
+                data: jsonData,
+                success: function(s){console.log(s); data.newOption=false},
+                dataType: 'json'
+              });
+              }
+            });
           }
-        });
-      });
+      }
 
-      $('#documentCategories').select2('data');
-    })      
